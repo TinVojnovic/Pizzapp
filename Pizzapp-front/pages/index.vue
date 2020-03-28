@@ -1,53 +1,57 @@
 <template>
-  <v-content>
-    <v-container class="fill-height" fluid>
-      <v-row align="center" justify="center">
-        <v-col cols="12" sm="8" md="4">
-          <v-card class="elevation-6">
-            <v-toolbar color="primary" dark flat>
-              <v-toolbar-title>Login form</v-toolbar-title>
-              <v-spacer />
-            </v-toolbar>
-            <v-card-text>
-              <v-form>
-                <v-text-field label="Email" name="login" type="text" v-model="credentials.email" />
-
-                <v-text-field
-                  id="password"
-                  label="Password"
-                  name="password"
-                  type="password"
-                  v-model="credentials.password"
-                />
-              </v-form>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer />
-              <v-btn color="primary" @click="Login()">Login</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-content>
+  <v-simple-table>
+    <template v-slot:default>
+      <thead>
+        <tr>
+          <th id="imgColumn" class="text-left"></th>
+          <th class="text-left">Name</th>
+          <th class="text-left">Size</th>
+          <th class="text-left">Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="item in menu" :key="item.name">
+          <td><img src="../assets/pizza.jpg"></td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.size }}</td>
+          <td>{{ item.price }}kn</td>
+        </tr>
+      </tbody>
+    </template>
+  </v-simple-table>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
-      credentials: {
-        email: "",
-        password: ""
-      }
+      menu: []
     };
   },
-  methods: {
-    Login() {
-      console.log(this.credentials);
-      this.$store.dispatch("login", this.credentials);
-      this.$router.push("/");
-    }
+  asyncData() {
+    return axios
+      .get("http://localhost:8080/menu/fetchAll")
+      .then(res => {
+        console.log(res.data);
+        return {
+            menu: res.data
+        }
+      })
+      .catch(err => console.log(err));
   }
 };
 </script>
+
+<style scoped>
+img{
+    height: 100px;
+    widows: 100px;
+    padding: 5px;
+}
+
+#imgColumn{
+    width: 250px;
+}
+</style>
