@@ -7,6 +7,7 @@ module.exports = {
 
             res.send(menuItem)
         }catch(error){
+            console.log(error)
             res.status(400).send({
                 error: "Invalid menu item information"
             })

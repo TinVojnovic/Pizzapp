@@ -17,13 +17,8 @@ module.exports = {
         values: ["pizza", "bbq", "soup", "side"],
         allowNull: false
       },
-      size:{
-        type: Sequelize.ENUM,
-        values: ["small", "medium", "large"],
-        allowNull: true
-      },
-      price:{
-        type: Sequelize.INTEGER,
+      prices:{
+        type: Sequelize.STRING,
         allowNull: false
       },
       createdAt: {
