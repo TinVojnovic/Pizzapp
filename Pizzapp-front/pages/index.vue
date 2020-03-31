@@ -11,7 +11,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in menu" :key="item.name" @click="Shop(item)">
+          <tr v-for="item in Menu" :key="item.name" @click="AddToCart(item)">
             <td>
               <img src="../assets/pizza.jpg" />
             </td>
@@ -45,20 +45,15 @@ export default {
       menu: []
     };
   },
-  asyncData() {
-    return axios
-      .get("http://localhost:8080/menu/fetchAll")
-      .then(res => {
-        console.log(res.data);
-        return {
-          menu: res.data
-        };
-      })
-      .catch(err => console.log(err));
+  computed: {
+    Menu() {
+      return this.$store.getters.loadedMenu;
+    }
   },
-  methods:{
-    Shop(item){
-      console.log(item.name + " has been put into the shopping cart!")
+  methods: {
+    AddToCart(item) {
+      console.log(item.name + " has been put into the shopping cart!");
+      this.$store.dispatch('addToCart', item)
     }
   }
 };
