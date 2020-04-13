@@ -2,10 +2,11 @@
   <div class="grid-container">
     <div>
       <v-form>
-        <v-text-field label="First name" required></v-text-field>
-        <v-text-field label="Last name" required></v-text-field>
-        <v-text-field label="Email" required></v-text-field>
-        <v-textarea :counter="50" label="Side note"></v-textarea>
+        <v-text-field label="First name" v-model="formData.name" required></v-text-field>
+        <v-text-field label="Last name" v-model="formData.surname" required></v-text-field>
+        <v-text-field label="Email" v-model="formData.email" required></v-text-field>
+        <v-text-field label="Phone" v-model="formData.phone" required></v-text-field>
+        <v-textarea :counter="50" label="Side note" v-model="formData.sideNote"></v-textarea>
       </v-form>
 
       <button @click="SendOrder()">Order</button>
@@ -19,6 +20,7 @@
 <script>
 import ShopItem from "@/components/ShopItem";
 import _ from "lodash";
+import axios from "axios";
 export default {
   components: {
     ShopItem
@@ -26,7 +28,14 @@ export default {
   data() {
     return {
       cart: [],
-      order: {}
+      order: {},
+      formData: {
+        name: "pero",
+        surname: "peric",
+        email: "peric@gmail.com",
+        phone: "0912423532",
+        sideNote: "neka napomena za narudjbu"
+      }
     };
   },
   methods: {
@@ -44,20 +53,41 @@ export default {
       localStorage.clear();
     },
     SendOrder() {
-      const itemData = {
+      const cart = JSON.parse(localStorage.getItem("shoppingCart"));
+
+      const order = {
         itemIds: [],
-        sizes: []
+        sizes: [],
+        name: "",
+        surname: "",
+        email: "",
+        phone: "",
+        sideNote: ""
       };
 
-      _.map(this.cart, item => {
-        itemData.itemIds.push(item.id);
-        itemData.sizes.push(item.size);
+      _.map(cart, item => {
+        for (let q = item.quantity; q > 0; q--) {
+          order.itemIds.push(item.id);
+          order.sizes.push(item.size);
+        }
+        order.name = this.formData.name;
+        order.surname = this.formData.surname;
+        order.email = this.formData.email;
+        order.phone = this.formData.phone;
+        order.sideNote = this.formData.sideNote;
       });
-      
-      console.log(itemData);
+
+      return axios
+        .post("http://127.0.0.1:8080/order/create", order)
+        .then(result => {
+          console.log(result);
+          this.EmptyCart()
+          this.$router.go()
+        }).catch(err => {
+          console.log(err)
+        })
     }
   },
-  computed: {},
   mounted() {
     this.ShoppingCart();
   }
