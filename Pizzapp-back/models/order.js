@@ -1,16 +1,28 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Order = sequelize.define('Order', {
-    items: {
+    itemIds: {
       type: DataTypes.STRING,
 
       get: function () {
-        return JSON.parse(this.getDataValue('items'));
+        return JSON.parse(this.getDataValue('itemIds'));
       },
       set: function (val) {
-        return this.setDataValue('items', JSON.stringify(val));
+        return this.setDataValue('itemIds', JSON.stringify(val));
       }
     },
+    sizes: {
+      type: DataTypes.STRING,
+
+      get: function () {
+        return JSON.parse(this.getDataValue('sizes'));
+      },
+      set: function (val) {
+        return this.setDataValue('sizes', JSON.stringify(val));
+      }
+    },
+    email: DataTypes.STRING,
+    phone: DataTypes.STRING,
     userId: DataTypes.STRING,
     sideNote: DataTypes.TEXT
   }, {});

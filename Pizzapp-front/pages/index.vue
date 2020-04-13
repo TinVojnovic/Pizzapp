@@ -37,12 +37,12 @@
 </template>
 
 <script>
-import axios from "axios";
-
+import _ from "lodash";
 export default {
   data() {
     return {
-      menu: []
+      menu: [],
+      shoppingCart: []
     };
   },
   computed: {
@@ -51,10 +51,28 @@ export default {
     }
   },
   methods: {
+    LoadCart() {
+      if (!localStorage.getItem("shoppingCart")) return;
+      this.shoppingCart = JSON.parse(localStorage.getItem("shoppingCart"));
+    },
     AddToCart(item) {
-      console.log(item.name + " has been put into the shopping cart!");
-      this.$store.dispatch('addToCart', item)
+      if (_.find(this.shoppingCart, { id: item.id })) {
+        const id = this.shoppingCart.findIndex(x => x.id === item.id);
+        this.shoppingCart[id]["quantity"]++;
+        console.log(this.shoppingCart[id].quantity);
+      } else {
+        this.shoppingCart.push(item);
+        const id = this.shoppingCart.findIndex(x => x.id === item.id);
+        this.shoppingCart[id]["quantity"] = 1;
+        console.log(item.name + " has been put into the shopping cart!");
+      }
+
+      const parsed = JSON.stringify(this.shoppingCart);
+      localStorage.setItem("shoppingCart", parsed);
     }
+  },
+  mounted() {
+    this.LoadCart();
   }
 };
 </script>

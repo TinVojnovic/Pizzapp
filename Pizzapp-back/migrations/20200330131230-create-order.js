@@ -8,16 +8,29 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      items: {
+      itemIds: {
         type: Sequelize.STRING,
         allowNull: false
+      },
+      sizes: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      email: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      phone: {
+        type: Sequelize.STRING,
+        allowNull: true
       },
       userId: {
         type: Sequelize.STRING,
         allowNull: true
       },
       sideNote: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
+        allowNull: true
       },
       createdAt: {
         allowNull: false,
