@@ -8,7 +8,7 @@ var cors = require('cors')
 var { sequelize } = require('./models')
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var userRouter = require('./routes/users');
 var menuRouter = require('./routes/menu');
 var ordersRouter = require('./routes/orders');
 
@@ -27,7 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors())
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/user', userRouter);
 app.use('/menu', menuRouter);
 app.use('/order', ordersRouter);
 

@@ -5,7 +5,7 @@ module.exports = {
     "database": "pizzapp",
     "host": "127.0.0.1",
     "dialect": "mysql",
-    "port":"3306",
+    "port": "3306",
     "operatorsAliases": 1
   },
   "test": {
@@ -23,5 +23,8 @@ module.exports = {
     "host": "127.0.0.1",
     "dialect": "mysql",
     "operatorsAliases": false
+  },
+  authentication: {
+    jwtSecret: 'secret'
   }
 }
